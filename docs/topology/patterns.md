@@ -112,8 +112,10 @@ flowchart LR
 ```
 
 - On the gateway (built with `transport_serial`): `listen: { endpoints: ["serial//dev/ttyUSB0#baudrate=115200"] }`.
-- For a pico multicast group: listen on `udp/224.0.0.225:7447` with matching `batch_size`, and QoS and
-  compression off (the multicast defaults).
+- For a pico multicast group: listen on `udp/224.0.0.225:7447` with `transport/link/tx/batch_size: 2048`
+  (pico's receive buffer), and QoS and compression off (the multicast defaults).
+- pico devices can't relay for each other and can't authenticate with user/password. See
+  [zenoh-pico limitations](../pico/limitations.md) for the full checklist.
 - Protect slow links with [downsampling](../configuration/downsampling.md) and [low-pass filters](../configuration/low-pass-filter.md).
 
 ## 8. Same-host high throughput

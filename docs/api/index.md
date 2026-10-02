@@ -58,7 +58,7 @@ Notes:
 - **C++** gets each feature from its backend. With the zenoh-pico backend, features follow pico's build flags,
   and SHM is unavailable.
 - **zenoh-pico** turns features on with CMake flags (`Z_FEATURE_*`). Advanced pub/sub and the connectivity
-  API are off by default. See [pico](languages/pico.md#build-features).
+  API are off by default. See [pico feature flags](../pico/capabilities.md#feature-flags).
 - **TypeScript** goes through `zenohd`'s remote-api plugin, so routing, transports and config are the
   router's. The client config only holds the plugin's WebSocket locator.
 

@@ -1,7 +1,7 @@
 # Serial
 
 `serial/` runs Zenoh over a UART or USB serial port (the `z-serial` crate). It's the usual way to connect
-microcontrollers running [zenoh-pico](../api/languages/pico.md) to a host or router.
+microcontrollers running [zenoh-pico](../pico/transports.md#serial) to a host or router.
 
 | Property | Value |
 |---|---|

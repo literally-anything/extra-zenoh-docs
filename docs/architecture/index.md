@@ -3,7 +3,7 @@
 This page explains how Zenoh is built: the crates, the layers a message goes through, the threads that run
 it, and where each feature in the rest of these docs lives in the code. It describes the Rust
 implementation (`eclipse-zenoh/zenoh` 1.10.1), which `zenohd` and every binding except zenoh-pico are
-built on. zenoh-pico is a separate C implementation; see [zenoh-pico](../api/languages/pico.md).
+built on. zenoh-pico is a separate C implementation; see [zenoh-pico architecture](../pico/architecture.md).
 
 ## The big picture
 

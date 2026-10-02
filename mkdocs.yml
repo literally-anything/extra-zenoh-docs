@@ -167,3 +167,11 @@ nav:
           - TypeScript: api/languages/typescript.md
           - zenoh-pico: api/languages/pico.md
           - Go: api/languages/go.md
+  - zenoh-pico:
+      - pico/index.md
+      - Architecture: pico/architecture.md
+      - Supported platforms (RTOS): pico/platforms.md
+      - Transports & links: pico/transports.md
+      - Capabilities & feature flags: pico/capabilities.md
+      - Configuration: pico/configuration.md
+      - Limitations & interoperability: pico/limitations.md

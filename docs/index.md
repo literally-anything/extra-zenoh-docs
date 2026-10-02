@@ -26,6 +26,7 @@ pieces fit together. This site fills those gaps.
 | [Shared memory](shm/index.md) | Zero-copy, the SHM API, and SHM tuning |
 | [Admin space](admin-space/index.md) | Every `@/<zid>/...` key and what it returns |
 | [Plugins](plugins/index.md) | Loading plugins, REST, storage manager, backends, ecosystem plugins, writing your own |
+| [zenoh-pico](pico/index.md) | The C implementation for microcontrollers: architecture, supported RTOSes and boards, transports, feature flags, configuration, limitations and interop with Rust nodes |
 | [API](api/index.md) | What each language binding offers, plus the data model shared by all of them, the timestamp stack, and lesser-known zenoh-ext APIs |
 
 ## Conventions
