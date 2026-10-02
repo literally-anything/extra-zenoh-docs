@@ -137,6 +137,19 @@ access_control: {
 
 The router logged: `f3 did not match any configured ACL subject. Default permission `Deny` will be applied on all messages` (f3 = bob's session).
 
+### Verified: mTLS + certificate CN subjects
+
+The [TLS + ACL example config](../configuration/examples.md#4-tls-router-with-mtls-and-per-cn-acl) was
+run with two `zenohd` clients holding certificates `CN=sensor-1` and `CN=dashboard`, signed by the router's CA:
+
+- The dashboard subscribed (SSE through its REST plugin) to `telemetry/**`, and the sensor put
+  `telemetry/room1` → **received** by the dashboard.
+- When the dashboard subscribed to `**` instead, it received **nothing**: `declare_subscriber` is only
+  allowed on keys **included** in `telemetry/**`, and `**` isn't.
+- A put made by the dashboard's own process on `telemetry/fake` reached the dashboard's own subscriber
+  **locally** (no router timestamp). The router never saw it. **ACL only filters traffic that crosses the
+  enforcing node's transports.** Local delivery inside a node isn't checked.
+
 ## Recipes
 
 ### Read-only clients

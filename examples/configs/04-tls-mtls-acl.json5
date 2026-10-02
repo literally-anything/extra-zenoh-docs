@@ -1,0 +1,36 @@
+// Router accepting only TLS clients with certificates; per-CN permissions.
+{
+  mode: "router",
+  listen: { endpoints: ["tls/0.0.0.0:7447"] },
+  transport: {
+    link: {
+      protocols: ["tls"],
+      tls: {
+        root_ca_certificate: "/etc/zenoh/ca.pem",
+        listen_private_key: "/etc/zenoh/router-key.pem",
+        listen_certificate: "/etc/zenoh/router-cert.pem",
+        enable_mtls: true,
+        close_link_on_expiration: true,
+      },
+    },
+  },
+  scouting: { multicast: { enabled: false } },
+  adminspace: { permissions: { read: true, write: false } },
+  access_control: {
+    enabled: true,
+    default_permission: "deny",
+    rules: [
+      { id: "telemetry-pub", messages: ["put", "delete"], flows: ["ingress"], permission: "allow", key_exprs: ["telemetry/**"] },
+      { id: "telemetry-sub", messages: ["declare_subscriber"], flows: ["ingress"], permission: "allow", key_exprs: ["telemetry/**"] },
+      { id: "telemetry-out", messages: ["put", "delete"], flows: ["egress"], permission: "allow", key_exprs: ["telemetry/**"] },
+    ],
+    subjects: [
+      { id: "sensors", cert_common_names: ["sensor-1", "sensor-2"] },
+      { id: "dashboards", cert_common_names: ["dashboard"] },
+    ],
+    policies: [
+      { rules: ["telemetry-pub"], subjects: ["sensors"] },
+      { rules: ["telemetry-sub", "telemetry-out"], subjects: ["dashboards"] },
+    ],
+  },
+}

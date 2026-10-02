@@ -1,0 +1,13 @@
+// Same-host peer using Unix sockets and shared memory (zenoh built with `shared-memory`).
+{
+  mode: "peer",
+  listen: { endpoints: ["unixsock-stream//tmp/zenoh-app.sock"] },
+  scouting: { multicast: { enabled: false } },
+  transport: {
+    shared_memory: {
+      enabled: true,
+      mode: "init",
+      transport_optimization: { enabled: true, pool_size: 67108864, message_size_threshold: 4096, messages: ["put"] },
+    },
+  },
+}

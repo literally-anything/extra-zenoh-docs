@@ -1,0 +1,23 @@
+// Production router: TCP + TLS listeners, admin space read-only, REST on localhost,
+// in-memory storage, timestamps on, multicast scouting answered but no autoconnect.
+{
+  mode: "router",
+  metadata: { name: "router-1", site: "lab" },
+  listen: { endpoints: ["tcp/0.0.0.0:7447"] },
+  connect: { endpoints: [] },
+  scouting: {
+    multicast: { enabled: true, listen: true, autoconnect: { router: [] } },
+    gossip: { enabled: true },
+  },
+  timestamping: { enabled: { router: true } },
+  adminspace: { enabled: true, permissions: { read: true, write: false } },
+  plugins_loading: { enabled: true },
+  plugins: {
+    rest: { http_port: "127.0.0.1:8000" },
+    storage_manager: {
+      storages: {
+        cache: { key_expr: "app/**", volume: "memory", complete: false },
+      },
+    },
+  },
+}

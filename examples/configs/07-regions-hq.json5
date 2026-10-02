@@ -1,0 +1,13 @@
+// HQ router treating each site router as a south subregion.
+{
+  mode: "router",
+  region_name: "hq",
+  listen: { endpoints: ["tcp/0.0.0.0:7447"] },
+  gateway: {
+    south: [
+      { filters: [ { region_names: ["site-a"] } ] },
+      { filters: [ { region_names: ["site-b"] } ] },
+    ],
+  },
+  routing: { router: { linkstate: { transport_weights: [] } } },
+}

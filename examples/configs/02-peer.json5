@@ -1,0 +1,17 @@
+// Application peer: finds others by multicast, also connects to a known router.
+{
+  mode: "peer",
+  connect: { endpoints: ["tcp/10.0.0.1:7447"] },
+  listen: { endpoints: ["tcp/0.0.0.0:0"] },
+  scouting: {
+    delay: 500,
+    multicast: {
+      enabled: true,
+      interface: "auto",
+      autoconnect: { peer: ["router", "peer"] },
+      autoconnect_strategy: { peer: { to_router: "always", to_peer: "greater-zid" } },
+    },
+    gossip: { enabled: true, multihop: false },
+  },
+  open: { return_conditions: { connect_scouted: true, declares: true } },
+}

@@ -92,9 +92,25 @@ see which topics use the bandwidth. Keep the list short: each entry adds series 
 
 ## Scraping with Prometheus
 
-Prometheus can't speak Zenoh. Expose the endpoint over HTTP with the [REST plugin](../plugins/rest.md) and
-scrape that URL (`metrics_path: '/@/<zid>/router/metrics'`, `params: { compression: ['false'] }`), or put a
-small exporter that queries `@/*/*/metrics` in front of it.
+The [REST plugin](../plugins/rest.md) can serve the metrics as a normal HTTP endpoint. With `?_raw=true` it
+returns the first reply **as is**, with `Content-Type: application/openmetrics-text…` and
+`Content-Encoding: gzip`. Prometheus handles both. `@/local` is a REST shortcut for the router's own ZID:
+
+```bash
+curl --compressed 'http://router:8000/@/local/router/metrics?_raw=true'
+```
+
+```yaml
+# prometheus.yml
+scrape_configs:
+  - job_name: zenoh
+    metrics_path: /@/local/router/metrics
+    params: { _raw: ['true'] }
+    static_configs:
+      - targets: ['router:8000']
+```
+
+(Verified against `zenohd` 1.10.1 built with `zenoh/stats`.)
 
 ## Sources
 

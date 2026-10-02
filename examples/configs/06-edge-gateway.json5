@@ -1,0 +1,20 @@
+// Edge router: protects a slow Wi-Fi uplink and a sensor network.
+{
+  mode: "router",
+  listen: { endpoints: ["tcp/0.0.0.0:7447"] },
+  qos: {
+    publication: [ { key_exprs: ["robot/logs/**"], config: { priority: "background", congestion_control: "drop" } } ],
+    network: [
+      { id: "camera-to-bg", messages: ["put"], key_exprs: ["camera/**"], flows: ["egress"],
+        interfaces: ["wlan0"], overwrite: { priority: "background", express: false } },
+    ],
+  },
+  downsampling: [
+    { id: "wifi-out", interfaces: ["wlan0"], flows: ["egress"], messages: ["put"],
+      rules: [ { key_expr: "robot/lidar/**", freq: 5.0 }, { key_expr: "robot/imu", freq: 20.0 } ] },
+  ],
+  low_pass_filter: [
+    { id: "no-big-on-wifi", interfaces: ["wlan0"], flows: ["egress"], messages: ["put", "reply"],
+      key_exprs: ["**"], size_limit: 65536 },
+  ],
+}
