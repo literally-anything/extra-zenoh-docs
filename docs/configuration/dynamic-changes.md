@@ -121,6 +121,36 @@ A write must leave `plugins/<name>` as a JSON **object**. Otherwise you get
 
 Changes are **not persisted**. They're lost when the process restarts. Update the config file as well.
 
+## Observed behaviour
+
+Captured from a `zenohd` 1.10.1 router (`id: "aaaa"`, admin space writable, REST on port 18000):
+
+```bash
+# 1. Add a storage at runtime: accepted, and the storage starts straight away
+curl -X PUT -H 'content-type: application/json' -d '{"key_expr":"demo3/**","volume":"memory"}' \
+  http://127.0.0.1:18000/@/aaaa/router/config/plugins/storage_manager/storages/demo3
+
+# 2. Change a core key: rejected
+curl -X PUT -d '1234' http://127.0.0.1:18000/@/aaaa/router/config/queries_default_timeout
+
+# 3. Change a REST plugin setting: rejected by the plugin
+curl -X PUT -d '8080' http://127.0.0.1:18000/@/aaaa/router/config/plugins/rest/http_port
+```
+
+Router log (the HTTP calls all returned success, because errors show up only here):
+
+```text
+WARN  zenoh::net::runtime::adminspace: Plugin `storage_manager` was already declared
+WARN  zenoh::net::runtime::adminspace: Plugin `storage_manager` was already loaded from .../libzenoh_plugin_storage_manager.so
+WARN  zenoh::net::runtime::adminspace: Plugin `storage_manager` was already started
+ERROR zenoh::net::runtime::adminspace: Error inserting conf value @/aaaa/router/config/queries_default_timeout : 1234 - Error inserting conf value queries_default_timeout : updating config is only supported for keys starting with `plugins/`
+ERROR zenoh::net::runtime::adminspace: Error inserting conf value @/aaaa/router/config/plugins/rest/http_port : 8080 - String("Runtime configuration change not supported ...")
+```
+
+The three `WARN` lines for case 1 are harmless. A change under `plugins/storage_manager/...` makes the
+admin space re-check the already-running plugin before it hands the change to the plugin's validator. The
+new storage then appears at `@/aaaa/router/status/plugins/storage_manager/storages/demo3`.
+
 ## Array items by id
 
 Lists of objects that have an `id` field (`qos/network`, `downsampling`, `low_pass_filter`,

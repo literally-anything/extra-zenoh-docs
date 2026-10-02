@@ -14,8 +14,11 @@ Query `@/<zid>/<mode>/metrics`. The reply is OpenMetrics text with encoding
 `application/openmetrics-text; version=1.0.0; charset=utf-8`, **gzip-compressed by default**.
 
 ```bash
-# Through the REST plugin (zenohd --rest-http-port 8000), without compression:
-curl 'http://localhost:8000/@/*/router/metrics?compression=false'
+# Through the REST plugin (zenohd --rest-http-port 8000), without compression.
+# Zenoh selector parameters are separated by ';' (not '&'). The REST plugin returns
+# this non-text payload base64-encoded inside its JSON reply.
+curl -s 'http://localhost:8000/@/*/router/metrics?compression=false;descriptors=false' \
+  | jq -r '.[0].value' | base64 -d
 ```
 
 Selector parameters:
@@ -34,30 +37,43 @@ parameter: `@/<zid>/router?_stats`.
 
 ## Metric families
 
-Every metric is prefixed with `zenoh_` and carries the labels `local_id` (ZID) and `local_whatami`. The
-OpenMetrics encoder adds the usual suffixes (`_total` for counters, `_bytes` for byte units, and
-`_bucket`/`_sum`/`_count` for histograms).
+Every metric is prefixed with `zenoh_` and carries `local_id` (ZID) and `local_whatami`. Counters and
+histograms come in three variants: an **aggregate** (labelled by `protocol` only), a
+**`_per_transport`** variant (adds the remote's labels) and a **`_per_link`** variant (also adds the
+locators). The `per_transport` / `per_link` selector parameters turn the detailed variants on or off.
 
-| Family | Type | Extra labels | Meaning |
-|---|---|---|---|
-| `build` | info | `version` | Build version |
-| `transports_opened` | gauge | — | Transports open now |
-| `links_opened` | gauge family | protocol | Links open now |
-| `resources_declared` | gauge family | `resource` (subscriber, queryable, token), `locality` (local, remote) | Declared entities |
-| `tx_bytes`, `rx_bytes` | counter (bytes) | transport, link, `protocol` | Bytes on the wire |
-| `tx_transport_message`, `rx_transport_message` | counter | transport, link, `protocol` | Transport-level messages (batches, keep-alives, …) |
-| `tx_network_message`, `rx_network_message` | counter | transport, link, `priority`, `message`, `shm`, `protocol` | Network messages |
-| `tx_network_message_payload`, `rx_network_message_payload` | histogram (bytes) | transport, `space` (user, admin), `priority`, `message`, `shm` | Payload sizes |
-| `tx_network_message_dropped_payload`, `rx_network_message_dropped_payload` | histogram (bytes) | transport, `priority`, `message`, `protocol`, `reason` | Payloads dropped, by reason |
-| `tx_network_message_payload_per_key`, `rx_network_message_payload_per_key` | histogram (bytes) | as payload, plus key | Only for keys in `stats/filters` |
+These are the `# TYPE` lines from a `zenohd` 1.10.1 built with `stats` (captured for this page):
 
-Transport labels: `remote_zid`, `remote_whatami`, `remote_group` (multicast), `remote_cn` (TLS/QUIC
-certificate CN). Link labels: `src_locator`, `dst_locator`.
+| Family (as exposed) | Type | Notes |
+|---|---|---|
+| `zenoh_build` (`zenoh_build_info`) | info | `version` label |
+| `zenoh_transports_opened` | gauge | Transports open now |
+| `zenoh_links_opened` | gauge | Per `protocol` |
+| `zenoh_{tx,rx}_bytes` | counter (`_total`) | Bytes on the wire. Also `_per_transport_bytes`, `_per_link_bytes` |
+| `zenoh_{tx,rx}_transport_message` | counter | Transport-level messages (batches, keep-alives, …). Also `_per_transport`, `_per_link` |
+| `zenoh_{tx,rx}_network_message` | counter | Network messages, labelled `priority`, `message`, `shm`. Also `_per_transport`, `_per_link` |
+| `zenoh_{tx,rx}_network_message_payload_bytes` | histogram | Payload sizes, labelled `space` (user/admin), `priority`, `message`, `shm`. Also `_per_transport` |
+| `zenoh_{tx,rx}_network_message_dropped_payload_bytes` | histogram | Dropped payloads, labelled `reason`. Also `_per_transport` |
+| `zenoh_{tx,rx}_network_message_payload_per_key_bytes` | histogram | Only for keys in `stats/filters`. Also `_per_transport` |
+
+Remote labels (per-transport/per-link series): `remote_zid`, `remote_whatami`, `remote_group` (multicast),
+`remote_cn` (TLS/QUIC certificate CN), `disconnected`. Link labels: `src_locator`, `dst_locator`.
+
+Example lines:
+
+```text
+zenoh_transports_opened{local_id="aaaa",local_whatami="router"} 1
+zenoh_links_opened{local_id="aaaa",local_whatami="router",protocol="tcp"} 1
+zenoh_tx_bytes_total{local_id="aaaa",local_whatami="router",protocol="tcp"} 255
+zenoh_tx_per_transport_bytes_total{local_id="aaaa",local_whatami="router",protocol="tcp",remote_zid="bbbb",remote_whatami="router",remote_group="",remote_cn="",disconnected="false"} 255
+zenoh_tx_network_message_total{local_id="aaaa",local_whatami="router",priority="data",message="put",shm="false",protocol="tcp"} 1
+```
 
 Label values:
 
 - `message`: `put`, `delete`, `query`, `reply`, `reply-err`, `response-final`, `interest`, `declare`, `oam`
 - `reason`: `access-control`, `congestion`, `downsampling`, `low-pass`, `no-link`
+- `priority`: `control`, `real-time`, `interactive-high`, `interactive-low`, `data-high`, `data`, `data-low`, `background`
 - histogram buckets (bytes): 0, 32, 1 Ki, 32 Ki, 1 Mi, 32 Mi, 1 Gi
 
 ## Per-key statistics
