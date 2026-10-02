@@ -111,6 +111,10 @@ Other rules:
 - `rules`, `subjects` and `policies` must all be present, or all absent: `All ACL rules/subjects/policies config lists must be provided`.
 - Empty lists are allowed but logged as warnings (and then only `default_permission` applies).
 - Multicast transports and traffic inside one session aren't checked.
+- A **blocked query** is answered at once with a `ResponseFinal`, so the querier's `get` ends with no
+  replies right away instead of waiting for its timeout. `liveliness_query` and
+  `declare_liveliness_subscriber` travel as *interests*; a blocked one is answered with a `DeclareFinal`, so
+  a liveliness `get` also ends at once. Blocked puts and declarations are dropped silently.
 
 ## Verified example
 

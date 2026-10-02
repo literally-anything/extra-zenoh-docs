@@ -11,7 +11,7 @@ Built with PyO3 on the Rust core. The published wheels include the APIs marked u
 
 | Module | Contents |
 |---|---|
-| `zenoh` | `open`, `scout`, `Session`, `Config`, `KeyExpr`, `Publisher`, `Subscriber`, `Querier`, `Queryable`, `Query`, `Reply`, `ReplyError`, `Sample`, `ZBytes`, `Encoding`, `Priority`, `CongestionControl`, `Reliability`, `Locality`, `QueryTarget`, `ConsolidationMode`, `Selector`, `Parameters`, `Timestamp`, `ZenohId`, `Liveliness`, `LivelinessToken`, `SessionInfo`, `Transport`, `Link`, events, `CancellationToken` |
+| `zenoh` | `open`, `scout`, `Session`, `Config`, `KeyExpr`, `Publisher`, `Subscriber`, `Querier`, `Queryable`, `Query`, `Reply`, `ReplyError`, `Sample`, `ZBytes`, `Encoding`, `Priority`, `CongestionControl`, `Reliability`, `Locality`, `QueryTarget`, `ConsolidationMode`, `Selector`, `Parameters`, `Timestamp`, `ZenohId`, `Liveliness`, `LivelinessToken`, `SessionInfo`, `Transport`, `Link`, events, `CancellationToken`, `TimestampInstrumentationBuilder`, `TimestampStack`, `InterceptionPoint` ([timestamp stack](../timestamp-stack.md); `open(config, timestamp_callback=…)`) |
 | `zenoh.handlers` | `DefaultHandler`, `FifoChannel`, `RingChannel`, `Callback`, `Handler` |
 | `zenoh.ext` | `z_serialize`, `z_deserialize`, width types (`Int8`…`UInt128`, `Float32`, `Float64`), `declare_advanced_publisher`, `declare_advanced_subscriber`, `CacheConfig`, `HistoryConfig`, `RecoveryConfig`, `MissDetectionConfig`, `RepliesConfig`, `Miss`, `SampleMissListener` |
 | `zenoh.shm` | `ShmProvider`, `MemoryLayout`, `AllocAlignment`, policies (`JustAlloc`, `BlockOn`, `GarbageCollect`, `Defragment`, `Deallocate`), `ZShm`, `ZShmMut` |

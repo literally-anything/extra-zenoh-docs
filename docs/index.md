@@ -16,7 +16,8 @@ pieces fit together. This site fills those gaps.
 
 | Section | What you'll find |
 |---|---|
-| [Concepts](concepts/index.md) | Sessions, modes, entities, key expressions, Cargo features, the `zenohd` binary |
+| [Architecture](architecture/index.md) | How the stack fits together (API → routing → transport → links), the wire protocol, threads, and a guide to adding a new transport |
+| [Concepts](concepts/index.md) | Sessions, modes, entities, key expressions, Cargo features, the `zenohd` binary, environment variables and thread pools, the `z_*` example programs |
 | [Configuration](configuration/index.md) | How config is loaded, **every** key with its default, endpoint syntax, interceptors (QoS overwrite, downsampling, low-pass), statistics, dynamic changes |
 | [Transports](transports/index.md) | All 10 link protocols compared, with their options and limits; the transport layer (queues, batching, congestion control); tuning; io_uring |
 | [Discovery](discovery/index.md) | Multicast and gossip scouting, interests, liveliness, matching, connectivity events |
@@ -25,7 +26,7 @@ pieces fit together. This site fills those gaps.
 | [Shared memory](shm/index.md) | Zero-copy, the SHM API, and SHM tuning |
 | [Admin space](admin-space/index.md) | Every `@/<zid>/...` key and what it returns |
 | [Plugins](plugins/index.md) | Loading plugins, REST, storage manager, backends, ecosystem plugins, writing your own |
-| [API](api/index.md) | What each language binding offers, plus the data model shared by all of them |
+| [API](api/index.md) | What each language binding offers, plus the data model shared by all of them, the timestamp stack, and lesser-known zenoh-ext APIs |
 
 ## Conventions
 

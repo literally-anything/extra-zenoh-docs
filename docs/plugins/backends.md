@@ -16,6 +16,20 @@ named `zenoh_backend_<name>`, loaded from `backend_search_dirs` (or `__path__`).
 Each repository has an `EXAMPLE_CONFIG.json5` with the full option list. All were at version 1.10.1 when
 this page was written.
 
+### Where the filesystem and RocksDB backends store data
+
+A storage's `dir` must be **relative** (absolute paths and `..` are rejected) and is resolved against a root
+directory, chosen in this order:
+
+| Backend | 1. Environment variable | 2. Otherwise |
+|---|---|---|
+| Filesystem | `ZENOH_BACKEND_FS_ROOT` | `$ZENOH_HOME/zenoh_backend_fs` |
+| RocksDB | `ZENOH_BACKEND_ROCKSDB_ROOT` | `$ZENOH_HOME/zenoh_backend_rocksdb` |
+
+`ZENOH_HOME` defaults to `~/.zenoh`. These are the only places at 1.10.1 that read `ZENOH_HOME` (see
+[Environment variables](../concepts/environment.md)). With the stock systemd unit (`ZENOH_HOME=/var/zenohd`),
+a filesystem storage with `dir: "example"` ends up in `/var/zenohd/zenoh_backend_fs/example`.
+
 ## Writing a backend
 
 Implement `zenoh_backend_traits::Volume` and `Storage`:

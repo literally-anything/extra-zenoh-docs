@@ -50,8 +50,9 @@ and leaving either out means "any".
 ## What happens to dropped messages
 
 - A dropped **put/delete** is gone, with no error to the publisher.
-- A dropped **query** never reaches the queryable. The querier gets no replies from that route and waits
-  for its timeout.
+- A dropped **query** never reaches the queryable. The dropping node sends a `ResponseFinal` back right
+  away, so the querier finishes without replies from that route instead of waiting for its timeout. (Checked:
+  a `z_get` whose query body was over the limit returned with 0 replies in about 10 ms, with an 8 s timeout.)
 - A dropped **reply** is missing from the querier's results.
 
 With the `stats` feature, drops are counted with `reason="low-pass"`.

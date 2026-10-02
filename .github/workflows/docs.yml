@@ -1,8 +1,9 @@
 name: Docs
 
+# Builds on every push and pull request; deploys to GitHub Pages only from the
+# repository's default branch (whatever it is called).
 on:
   push:
-    branches: [main]
   pull_request:
   workflow_dispatch:
 
@@ -30,7 +31,7 @@ jobs:
           path: site
 
   deploy:
-    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    if: github.event_name != 'pull_request' && github.ref_name == github.event.repository.default_branch
     needs: build
     runs-on: ubuntu-latest
     permissions:

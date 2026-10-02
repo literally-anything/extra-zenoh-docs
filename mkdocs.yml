@@ -3,7 +3,7 @@ site_description: In-depth, source-verified documentation for Eclipse Zenoh 1.10
 site_url: https://literally-anything.github.io/extra-zenoh-docs/
 repo_url: https://github.com/literally-anything/extra-zenoh-docs
 repo_name: extra-zenoh-docs
-edit_uri: edit/main/docs/
+edit_uri: edit/HEAD/docs/
 
 theme:
   name: material
@@ -74,11 +74,17 @@ extra:
 
 nav:
   - Home: index.md
+  - Architecture:
+      - architecture/index.md
+      - Wire protocol: architecture/protocol.md
+      - "Guide: adding a transport": architecture/new-transport.md
   - Concepts:
       - concepts/index.md
       - Key expressions: concepts/key-expressions.md
       - Cargo feature flags: concepts/feature-flags.md
       - zenohd (router binary): concepts/zenohd.md
+      - Environment variables & threads: concepts/environment.md
+      - Example programs (z_*): concepts/examples.md
   - Configuration:
       - configuration/index.md
       - Full reference: configuration/reference.md
@@ -149,6 +155,8 @@ nav:
       - Serialization: api/serialization.md
       - Advanced pub/sub (zenoh-ext): api/advanced-pubsub.md
       - Cancellation: api/cancellation.md
+      - Timestamp stack: api/timestamp-stack.md
+      - "zenoh-ext: Group, PublicationCache, QueryingSubscriber": api/zenoh-ext-legacy.md
       - Languages:
           - Rust: api/languages/rust.md
           - C: api/languages/c.md

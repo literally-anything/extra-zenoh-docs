@@ -26,7 +26,7 @@ All bindings were checked at their **1.10.1** release tags.
 ## Capability matrix
 
 ✅ available · 🔬 available but unstable upstream (feature flag, annotation or "unstable" marker) ·
-⚙️ off by default, enable at build time · ❌ not available
+⚙️ off by default, enable at build time · ⚠️ partly available (see the cell) · ❌ not available
 
 | Capability | Rust | C | C++ | Python | Kotlin | Java | TS | Pico | Go |
 |---|---|---|---|---|---|---|---|---|---|
@@ -47,6 +47,9 @@ All bindings were checked at their **1.10.1** release tags.
 | Advanced pub/sub (cache, history, miss detection) | 🔬 | 🔬 | 🔬 | 🔬 | 🔬 | ❌ | ❌ | ⚙️ | ✅ |
 | Shared memory API | 🔬 | 🔬 | 🔬 (zenoh-c backend) | 🔬 | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Cancellation token | 🔬 | 🔬 | 🔬 | 🔬 | ❌ | ❌ | ✅ | 🔬 | ✅ |
+| [Timestamp stack](timestamp-stack.md) (per-hop latency) | 🔬 | ❌ | ❌ | 🔬 | ❌ | ❌ | ❌ | ❌ | ❌ |
+| [QueryingSubscriber / PublicationCache](zenoh-ext-legacy.md) (deprecated) | 🔬 | 🔬 | 🔬 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| [Group membership](zenoh-ext-legacy.md#group-membership-zenoh_extgroup) | 🔬 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 
 Notes:
 
@@ -74,6 +77,8 @@ Notes:
 | [Serialization](serialization.md) | The zenoh-ext wire format, shared by all languages |
 | [Advanced pub/sub](advanced-pubsub.md) | `AdvancedPublisher` / `AdvancedSubscriber` |
 | [Cancellation](cancellation.md) | Cancelling in-flight gets |
+| [Timestamp stack](timestamp-stack.md) | Per-hop latency instrumentation |
+| [zenoh-ext: Group, PublicationCache, QueryingSubscriber](zenoh-ext-legacy.md) | Lesser-known and deprecated zenoh-ext APIs |
 
 ## Languages
 

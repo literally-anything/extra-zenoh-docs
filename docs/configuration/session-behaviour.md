@@ -102,4 +102,4 @@ channel is closed and replies that arrive later are discarded.
 - `zenoh/src/net/routing/namespace.rs`, `zenoh/src/net/runtime/mod.rs`
 - `zenoh/src/api/session.rs` (aggregation in `declare_subscriber_inner` / `declare_publisher_inner`)
 - `zenoh/src/net/routing/dispatcher/pubsub.rs` (`treat_timestamp!`), `dispatcher/tables.rs`
-- `uhlc` 0.8.0 (`DEFAULT_DELTA_MS = 500`, `UHLC_MAX_DELTA_MS`)
+- `uhlc` 0.8.2, the version in zenoh's `Cargo.lock` (`DEFAULT_DELTA_MS = 500`, `UHLC_MAX_DELTA_MS`)

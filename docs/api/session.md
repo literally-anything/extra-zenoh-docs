@@ -41,6 +41,10 @@ A `Session` is the entry point. Everything is declared on it, and closing it und
 - `close()` undeclares all entities and closes transports. In Rust, dropping the last handle also closes it,
   and `is_closed()` reports the state. Operations on a closed session return `SessionClosedError`.
 - A session is cheap to clone (an `Arc`). Share one per process instead of opening many.
+- Rust `close()` gives up after **10 s** with `close operation timed out!`. With `unstable`,
+  `session.close().wait_callbacks()` also waits for callbacks that are still running. Entities hold the
+  session through an internal `WeakSession` (exposed only with `internal`), so a forgotten subscriber
+  doesn't keep the session alive. When the last `Session` handle is dropped, the session closes.
 
 ## Configuration
 

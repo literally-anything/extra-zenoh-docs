@@ -37,6 +37,8 @@ Other details:
 - It's a strict "drop if too soon" filter. There's no queue and no smoothing: if 10 messages arrive in a
   burst, the first passes and the next 9 are dropped.
 - Only the message types in `messages` are affected. Declarations, interests and final responses always pass.
+- A dropped **query** is answered at once with a `ResponseFinal` by the dropping node, so the querier
+  doesn't wait for its timeout. It just gets no replies from that route.
 
 ## Transport matching
 

@@ -24,7 +24,7 @@ negotiate:
 
 | Item | Rule |
 |---|---|
-| Zenoh ID, mode, version | Exchanged. Versions must be compatible |
+| Zenoh ID, mode, version | Exchanged. The protocol version must be **equal** on both sides (`0x09` at 1.10.1); see [Wire protocol](../architecture/protocol.md) |
 | `sequence_number_resolution` | The smaller of the two |
 | `batch_size` | The smaller of the two sides, capped by the link MTU |
 | QoS | On only if both sides enable `transport/unicast/qos` |
@@ -130,7 +130,7 @@ For each message, the transport chooses a link like this (`TransportUnicastUnive
 1. **Full match**: the link's reliability equals the message's **and** its `prio` range contains the
    message priority. If several match, the **narrowest** range wins.
 2. **Partial match**: reliability matches, priority doesn't.
-3. **Any**: the first link.
+3. **Any**: otherwise, the first link that matched neither rule.
 
 Set link properties with endpoint metadata: `?prio=1-3;rel=1`. See [Endpoints](../configuration/endpoints.md#metadata).
 

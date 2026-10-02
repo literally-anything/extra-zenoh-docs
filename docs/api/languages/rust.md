@@ -52,7 +52,8 @@ change the **API** are:
 | `zenoh::config` | `Config`, `EndPoint`, `Locator`, `WhatAmI` |
 | `zenoh::shm` | :material-flask: SHM ([API](../../shm/api.md)) |
 | `zenoh::cancellation` | :material-flask: `CancellationToken` |
-| `zenoh_ext` | `z_serialize`/`z_deserialize`, `ZSerializer`/`ZDeserializer`; :material-flask: advanced pub/sub |
+| `zenoh::timestamp_stack` | :material-flask: `TimestampInstrumentationBuilder`, `TimestampStack`, `InterceptionPoint` ([Timestamp stack](../timestamp-stack.md)) |
+| `zenoh_ext` | `z_serialize`/`z_deserialize`, `ZSerializer`/`ZDeserializer`; :material-flask: advanced pub/sub, `group::Group`, deprecated `PublicationCache` / `QueryingSubscriber` ([details](../zenoh-ext-legacy.md)) |
 
 ## Examples
 
