@@ -1,0 +1,161 @@
+site_name: Zenoh Extra Docs
+site_description: In-depth, source-verified documentation for Eclipse Zenoh 1.10
+site_url: https://literally-anything.github.io/extra-zenoh-docs/
+repo_url: https://github.com/literally-anything/extra-zenoh-docs
+repo_name: extra-zenoh-docs
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.indexes
+    - navigation.top
+    - navigation.footer
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.tabs.link
+    - toc.follow
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+plugins:
+  - search
+
+validation:
+  omitted_files: warn
+  absolute_links: warn
+  unrecognized_links: warn
+  anchors: warn
+
+extra:
+  zenoh_version: "1.10.1"
+  zenoh_commit: "173b1220"
+
+nav:
+  - Home: index.md
+  - Concepts:
+      - concepts/index.md
+      - Key expressions: concepts/key-expressions.md
+      - Cargo feature flags: concepts/feature-flags.md
+      - zenohd (router binary): concepts/zenohd.md
+  - Configuration:
+      - configuration/index.md
+      - Full reference: configuration/reference.md
+      - Mode-dependent values: configuration/mode-dependent-values.md
+      - Endpoints & locators: configuration/endpoints.md
+      - QoS overwrite: configuration/qos-overwrite.md
+      - Downsampling: configuration/downsampling.md
+      - Low-pass filter: configuration/low-pass-filter.md
+      - Namespace, aggregation, timestamping: configuration/session-behaviour.md
+      - Statistics: configuration/stats.md
+      - Example configurations: configuration/examples.md
+      - Dynamic changes: configuration/dynamic-changes.md
+  - Transports:
+      - transports/index.md
+      - Transport layer: transports/transport-layer.md
+      - TCP: transports/tcp.md
+      - UDP: transports/udp.md
+      - TLS: transports/tls.md
+      - QUIC: transports/quic.md
+      - QUIC datagram: transports/quic-datagram.md
+      - WebSocket: transports/ws.md
+      - Unix socket stream: transports/unixsock-stream.md
+      - Unix pipe: transports/unixpipe.md
+      - Serial: transports/serial.md
+      - VSOCK: transports/vsock.md
+      - Tuning: transports/tuning.md
+      - io_uring: transports/io-uring.md
+  - Discovery:
+      - discovery/index.md
+      - Scouting: discovery/scouting.md
+      - Interests & declarations: discovery/interests.md
+      - Liveliness: discovery/liveliness.md
+      - Matching: discovery/matching.md
+      - Connectivity events: discovery/connectivity-events.md
+  - Topology:
+      - topology/index.md
+      - Routing: topology/routing.md
+      - Regions & gateways: topology/regions.md
+      - Deployment patterns: topology/patterns.md
+  - Security:
+      - security/index.md
+      - Authentication: security/authentication.md
+      - Access control: security/access-control.md
+  - Shared memory:
+      - shm/index.md
+      - SHM API: shm/api.md
+      - Configuration & tuning: shm/config.md
+  - Admin space:
+      - admin-space/index.md
+      - Key reference: admin-space/reference.md
+  - Plugins:
+      - plugins/index.md
+      - REST plugin: plugins/rest.md
+      - Storage manager: plugins/storage-manager.md
+      - Storage backends: plugins/backends.md
+      - Ecosystem plugins: plugins/ecosystem.md
+      - Writing a plugin: plugins/writing-a-plugin.md
+  - API:
+      - api/index.md
+      - Data model: api/data-model.md
+      - Session: api/session.md
+      - Publish / subscribe: api/pubsub.md
+      - Query / queryable / querier: api/query.md
+      - Liveliness: api/liveliness.md
+      - Handlers & channels: api/handlers.md
+      - Session info & connectivity: api/info.md
+      - Scouting: api/scouting.md
+      - Serialization: api/serialization.md
+      - Advanced pub/sub (zenoh-ext): api/advanced-pubsub.md
+      - Cancellation: api/cancellation.md
+      - Languages:
+          - Rust: api/languages/rust.md
+          - C: api/languages/c.md
+          - C++: api/languages/cpp.md
+          - Python: api/languages/python.md
+          - Kotlin: api/languages/kotlin.md
+          - Java: api/languages/java.md
+          - TypeScript: api/languages/typescript.md
+          - zenoh-pico: api/languages/pico.md
+          - Go: api/languages/go.md
