@@ -7,7 +7,7 @@ for certificate-based identities that [access control](../security/access-contro
 |---|---|
 | Feature | `transport_tls` (default) |
 | Reliable / stream | yes / yes |
-| Max batch | 65535 |
+| Max batch | Below 65535, aligned to the TCP MSS like [TCP](tcp.md#effective-mtu) |
 | TLS versions | TLS 1.2 and 1.3. **TLS 1.3 only** when mTLS is on |
 | Private keys | PEM: RSA (PKCS#1), PKCS#8 or EC (SEC1) |
 | io_uring | not supported (the TLS layer owns the socket) |

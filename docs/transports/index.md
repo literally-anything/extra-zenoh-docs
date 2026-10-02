@@ -16,10 +16,10 @@ All values are from the link crates in `io/zenoh-links/`.
 
 | Locator | Cargo feature (default?) | Reliable by default | Byte stream | Max batch / MTU | Encryption | Multicast | io_uring RX | Platforms |
 |---|---|---|---|---|---|---|---|---|
-| [`tcp/`](tcp.md) | `transport_tcp` ✅ | yes | yes | 65535 | no | no | ✅ | all |
+| [`tcp/`](tcp.md) | `transport_tcp` ✅ | yes | yes | ≈65.4k ([aligned to MSS](tcp.md#effective-mtu)) | no | no | ✅ | all |
 | [`udp/`](udp.md) | `transport_udp` ✅ | **no** | no | 65487 (Linux/Windows), 9216 (macOS), 8192 (other) | no | **yes** | ✅ (connected only) | all |
 | [`udp/…?rel=1`](udp.md#reliable-udp) | `transport_udp` ✅ | yes (QUIC without TLS) | no | 65535 | no | no | ❌ | all |
-| [`tls/`](tls.md) | `transport_tls` ✅ | yes | yes | 65535 | TLS 1.2/1.3 (1.3 with mTLS) | no | ❌ | all |
+| [`tls/`](tls.md) | `transport_tls` ✅ | yes | yes | ≈65.4k (same MSS alignment as TCP) | TLS 1.2/1.3 (1.3 with mTLS) | no | ❌ | all |
 | [`quic/`](quic.md) | `transport_quic` ✅ | yes | no (QUIC streams) | 65535 | QUIC/TLS 1.3 | no | ❌ | all |
 | [`quic/…?rel=0`](quic-datagram.md) | `transport_quic_datagram` ✅ | **no** | no | QUIC `max_datagram_size` when the link opens (≈1.2 kB with default `initial_mtu`) | QUIC/TLS 1.3 | no | ❌ | all |
 | [`ws/`](ws.md) | `transport_ws` ✅ | yes | no (WS messages) | 65535 | no (no `wss`) | no | ❌ | all |

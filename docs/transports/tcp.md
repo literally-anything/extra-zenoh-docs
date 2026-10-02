@@ -8,7 +8,7 @@ configure something else.
 | Feature | `transport_tcp` (default) |
 | Reliable | yes (override with `?rel=0`) |
 | Byte stream | yes. Each batch gets a 2-byte length prefix |
-| Max batch | 65535 bytes (limited by the 16-bit length prefix, not by TCP) |
+| Max batch | Less than 65535: see [Effective MTU](#effective-mtu) (65480 on a typical Linux loopback) |
 | Encryption | none. Use [TLS](tls.md) or [QUIC](quic.md) |
 | io_uring | supported |
 | Listener backlog | 1024 |
@@ -23,6 +23,17 @@ tcp/router.example.com:7447
 ```
 
 Hostnames are resolved with the system resolver. Multicast addresses are filtered out.
+
+## Effective MTU
+
+The TCP link doesn't report the full 65535 bytes. When a link is created (`zenoh-link-tcp/src/unicast.rs`):
+
+1. Start from 65535 and subtract the IP+TCP header size (RFC 6691): 40 for IPv4, 60 for IPv6.
+2. On Unix, read the socket's MSS, halve it, and round the value **down to the largest multiple of MSS/2**
+   that fits. Batches then line up with TCP segments.
+
+So a Linux loopback IPv4 link reports `mtu: 65480`, and real networks (MSS around 1460) end up a little lower.
+The negotiated batch size is the minimum of this and `transport/link/tx/batch_size` on both sides.
 
 ## Endpoint config (`#`)
 

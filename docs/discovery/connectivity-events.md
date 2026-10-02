@@ -57,6 +57,21 @@ while let Ok(event) = listener.recv_async().await {
 - `.history(true)` first replays a `Put` for every transport or link that already exists.
 - Like other listeners, they take `callback`, `with(handler)` and `background()`.
 
+## Without the unstable API: the session-local admin space
+
+Every session also publishes its own transport and link events as ordinary samples on
+`@/<own zid>/session/transport/**` (visible only inside that session). A normal subscriber works:
+
+```rust
+let me = session.zid();
+let sub = session.declare_subscriber(format!("@/{me}/session/transport/**")).await?;
+// Put  @/<me>/session/transport/unicast/<peer>             {"zid":…,"whatami":…,"is_qos":…,"is_shm":…}
+// Put  @/<me>/session/transport/unicast/<peer>/link/<hash>  {"src":…,"dst":…,"mtu":…,…}
+// Delete on close
+```
+
+See the [admin space reference](../admin-space/reference.md#session-local-admin-space-zidsession).
+
 ## When to use what
 
 | Need | Use |
